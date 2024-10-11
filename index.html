@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>連絡先登録</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>連絡先を登録</h1>
+    <form id="contactForm">
+        <label for="name">名前:</label>
+        <input type="text" id="name" required>
+        <label for="phone">電話番号:</label>
+        <input type="tel" id="phone" required>
+        <button type="submit">ダウンロード</button>
+    </form>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // フォームのデフォルト動作をキャンセル
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+
+            const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL;TYPE=CELL:${phone}\nEND:VCARD`;
+            const blob = new Blob([vCard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'contact.vcf';
+            a.click();
+            URL.revokeObjectURL(url); // メモリ解放
+        });
+    </script>
+</body>
+</html>
